@@ -67,7 +67,10 @@ fn parse_code(mut cells: [u8; 65535], mut cell_index: usize, code: &str) {
                     .map(|c| c as u8)
                     .collect();
 
-                if let Some(c) = input_chars.get(0) {
+                if let Some(mut c) = input_chars.get(0) {
+                    if *c == 10 {
+                        c = &0;
+                    }
                     cells[cell_index] = *c;
                 } else {
                     eprintln!("Enter a valid input.");
