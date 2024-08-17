@@ -1,4 +1,4 @@
-use std::{env, fs, process};
+use std::{env, fs, io, process};
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -55,7 +55,25 @@ fn parse_code(mut cells: [u8; 65535], mut cell_index: usize, code: &str) {
             '.' => {
                 print!("{}", cells[cell_index] as char)
             }
-            ',' => {}
+            ',' => {
+                let mut input = String::new();
+                io::stdin()
+                    .read_line(&mut input)
+                    .expect("Could not read input.");
+
+                let input_chars: Vec<u8> = input
+                    .chars()
+                    .filter(|&c| c.is_ascii())
+                    .map(|c| c as u8)
+                    .collect();
+
+                if let Some(c) = input_chars.get(0) {
+                    cells[cell_index] = *c;
+                } else {
+                    eprintln!("Enter a valid input.");
+                    process::exit(1);
+                }
+            }
             '[' => {
                 bracket_indexes[bracket_index] = i + 1;
                 bracket_index += 1;
