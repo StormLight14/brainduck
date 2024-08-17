@@ -18,13 +18,13 @@ fn main() {
             process::exit(1);
         }
     };
-    let mut cells: [u8; 65535] = [0; 65535];
-    let mut cell_index: usize = 0;
 
-    parse_code(cells.clone(), cell_index.clone(), &code_text);
+    parse_code(&code_text);
 }
 
-fn parse_code(mut cells: [u8; 65535], mut cell_index: usize, code: &str) {
+fn parse_code(code: &str) {
+    let mut cells: [u8; 65535] = [0; 65535];
+    let mut cell_index: usize = 0;
     let code_chars: Vec<char> = code.chars().collect();
     let mut bracket_index: usize = 0;
     let mut bracket_indexes: [usize; 100] = [0; 100];
