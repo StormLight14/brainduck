@@ -27,7 +27,7 @@ fn parse_code(code: &str) {
     let mut cell_index: usize = 0;
     let code_chars: Vec<char> = code.chars().collect();
     let mut bracket_index: usize = 0;
-    let mut bracket_indexes: [usize; 5000] = [0; 5000];
+    let mut bracket_indexes: [usize; 65535] = [0; 65535];
     let mut i = 0;
 
     while i < code_chars.len() {
