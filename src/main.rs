@@ -27,7 +27,7 @@ fn parse_code(code: &str) {
     let mut cell_index: usize = 0;
     let code_chars: Vec<char> = code.chars().collect();
     let mut bracket_index: usize = 0;
-    let mut bracket_indexes: [usize; 100] = [0; 100];
+    let mut bracket_indexes: [usize; 5000] = [0; 5000];
     let mut i = 0;
 
     while i < code_chars.len() {
@@ -78,15 +78,26 @@ fn parse_code(code: &str) {
                 }
             }
             '[' => {
-                bracket_indexes[bracket_index] = i + 1;
-                bracket_index += 1;
+                if cells[cell_index] != 0 {
+                    bracket_indexes[bracket_index] = i;
+                    bracket_index += 1;
+                } else {
+                    let mut open_brackets = 1;
+                    while open_brackets > 0 {
+                        i += 1;
+                        if code_chars[i] == '[' {
+                            open_brackets += 1;
+                        } else if code_chars[i] == ']' {
+                            open_brackets -= 1;
+                        }
+                    }
+                }
             }
             ']' => {
-                if cells[cell_index] == 0 {
-                    bracket_index = bracket_index.wrapping_sub(1);
+                if cells[cell_index] != 0 {
+                    i = bracket_indexes[bracket_index - 1] - 1;
                 } else {
-                    i = bracket_indexes[bracket_index - 1];
-                    continue;
+                    bracket_index -= 1;
                 }
             }
             _ => {}
